@@ -13,8 +13,12 @@ app.use(
 );
 app.use(bodyParser.json());
 
+const userRouter = require("./routers/userRouter");
+
 require("dotenv").config();
 mongoose.connect(process.env.DB);
+
+app.use("/", userRouter);
 
 port = process.env.PORT || 8088;
 
