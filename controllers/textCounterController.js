@@ -38,4 +38,18 @@ const countCharacters = async (req, res) => {
   }
 };
 
-module.exports = { countWords, countCharacters };
+const countSentence = async (req, res) => {
+  try {
+    let text = await getTextFromDB(req.user._id);
+    if (text !== null) {
+      const sentenceCount = (text.match(/[.!?]+/g) || []).length;
+      return res.status(200).send({ TotalSentence: sentenceCount });
+    } else {
+      return res.status(404).send("No text available. Create one first.");
+    }
+  } catch {
+    return res.status(500).send("Something went wrong! Please try again.");
+  }
+};
+
+module.exports = { countWords, countCharacters, countSentence };
