@@ -25,6 +25,8 @@ const userSignup = async (req, res) => {
                 .send("Something went wrong! Please try again.");
             });
         });
+      } else {
+        return res.status(400).send("Account with this email already exists!");
       }
     } else {
       return res.status(400).send("Email and password both are required.");
