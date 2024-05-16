@@ -14,10 +14,7 @@ const userSignup = async (req, res) => {
           user
             .save()
             .then(() => {
-              return res.send({
-                status: "success",
-                message: "New user Created.",
-              });
+              return res.status(201).send("New user created.");
             })
             .catch((err) => {
               return res
