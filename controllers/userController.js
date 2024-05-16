@@ -36,4 +36,35 @@ const userSignup = async (req, res) => {
   }
 };
 
-module.exports = { userSignup };
+const userLogin = async (req, res) => {
+  try {
+    let user = await User.findOne({ email: req.body.email });
+    if (user !== null) {
+      const checkPass = bcrypt.compareSync(req.body.password, user.password);
+      if (checkPass) {
+        const token = user.generateJWT();
+        return res.send({
+          status: "success",
+          token: token,
+        });
+      } else {
+        return res.send({
+          status: "failed",
+          message: "Invalid password!!",
+        });
+      }
+    } else {
+      return res.send({
+        status: "failed",
+        message: "Invalid email!!",
+      });
+    }
+  } catch (err) {
+    return res.send({
+      status: "failed",
+      message: "An error Occoured!! Please try again.",
+    });
+  }
+};
+
+module.exports = { userSignup, userLogin };
