@@ -14,11 +14,13 @@ app.use(
 app.use(bodyParser.json());
 
 const userRouter = require("./routers/userRouter");
+const textRouter = require("./routers/textRouter");
 
 require("dotenv").config();
 mongoose.connect(process.env.DB);
 
 app.use("/", userRouter);
+app.use("/text", textRouter);
 
 port = process.env.PORT || 8088;
 
