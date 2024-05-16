@@ -3,10 +3,7 @@ const jwt = require("jsonwebtoken");
 module.exports = function (req, res, next) {
   let token = req.header("Authorization");
   if (!token) {
-    res.send({
-      status: "failed",
-      message: "No token found!!",
-    });
+    res.status(400), send("No token found!!");
   } else {
     token = token.split(" ")[1].trim();
     try {
@@ -14,10 +11,7 @@ module.exports = function (req, res, next) {
       req.user = decoded;
       next();
     } catch (err) {
-      res.send({
-        status: "failed",
-        message: "Unauthorize!!",
-      });
+      res.status(401), send("Unauthorized!!");
     }
   }
 };
