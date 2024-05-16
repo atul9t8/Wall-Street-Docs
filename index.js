@@ -15,12 +15,14 @@ app.use(bodyParser.json());
 
 const userRouter = require("./routers/userRouter");
 const textRouter = require("./routers/textRouter");
+const textCountRouter = require("./routers/textCounterRouter");
 
 require("dotenv").config();
 mongoose.connect(process.env.DB);
 
 app.use("/", userRouter);
 app.use("/text", textRouter);
+app.use("/count", textCountRouter);
 
 port = process.env.PORT || 8088;
 
