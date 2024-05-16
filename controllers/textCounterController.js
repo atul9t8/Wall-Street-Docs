@@ -52,6 +52,23 @@ const countSentence = async (req, res) => {
   }
 };
 
+const countParagraphs = async (req, res) => {
+  try {
+    let text = await getTextFromDB(req.user._id);
+    if (text !== null) {
+      let paragraphs = text.split(/\.+/);
+      paragraphs = paragraphs.filter((paragraph) => paragraph.trim() !== "");
+      const paragraphCount = paragraphs.length;
+      return res.status(200).send({ TotalParagraph: paragraphCount });
+    } else {
+      return res.status(404).send("No text available. Create one first.");
+    }
+  } catch (error) {
+    console.error("Error counting paragraphs:", error);
+    return res.status(500).send("Something went wrong! Please try again.");
+  }
+};
+
 const longestWord = async (req, res) => {
   try {
     let text = await getTextFromDB(req.user._id);
@@ -78,4 +95,10 @@ const longestWord = async (req, res) => {
   }
 };
 
-module.exports = { countWords, countCharacters, countSentence, longestWord };
+module.exports = {
+  countWords,
+  countCharacters,
+  countSentence,
+  countParagraphs,
+  longestWord,
+};
