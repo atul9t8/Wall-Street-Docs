@@ -52,4 +52,30 @@ const countSentence = async (req, res) => {
   }
 };
 
-module.exports = { countWords, countCharacters, countSentence };
+const longestWord = async (req, res) => {
+  try {
+    let text = await getTextFromDB(req.user._id);
+    if (text !== null) {
+      const wordsArray = text.split(/\s+/).filter((word) => word.length > 0);
+
+      const wordLengths = new Set(wordsArray.map((word) => word.length));
+      const maxLength = Math.max(...wordLengths);
+
+      const longestWords = [];
+
+      for (const length of wordLengths) {
+        if (length === maxLength) {
+          const words = wordsArray.filter((word) => word.length === length);
+          longestWords.push(words);
+        }
+      }
+      return res.status(200).send({ longestWords: longestWords });
+    } else {
+      return res.status(404).send("No text available. Create one first.");
+    }
+  } catch (err) {
+    return res.status(500).send(err);
+  }
+};
+
+module.exports = { countWords, countCharacters, countSentence, longestWord };
