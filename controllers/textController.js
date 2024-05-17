@@ -21,4 +21,19 @@ const createOrUpdateText = async (req, res) => {
   }
 };
 
-module.exports = { createOrUpdateText };
+const deleteText = async (req, res) => {
+  //it will delete text which was created by logged in user.
+  try {
+    let userExist = await Text.findOne({ user: req.user._id });
+    if (userExist !== null) {
+      await userExist.deleteOne();
+      return res.status(200).send("Text Deleted.");
+    } else {
+      return res.status(404).send("No text available. Create one first.");
+    }
+  } catch {
+    return res.status(500).send("Something went wrong! Please try again.");
+  }
+};
+
+module.exports = { createOrUpdateText, deleteText };
