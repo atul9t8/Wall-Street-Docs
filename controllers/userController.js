@@ -40,27 +40,15 @@ const userLogin = async (req, res) => {
       const checkPass = bcrypt.compareSync(req.body.password, user.password);
       if (checkPass) {
         const token = user.generateJWT();
-        return res.send({
-          status: "success",
-          token: token,
-        });
+        return res.status(200).send(token);
       } else {
-        return res.send({
-          status: "failed",
-          message: "Invalid password!!",
-        });
+        return res.status(400).send("Invalid password!");
       }
     } else {
-      return res.send({
-        status: "failed",
-        message: "Invalid email!!",
-      });
+      return res.status(400).send("Invalid email!");
     }
   } catch (err) {
-    return res.send({
-      status: "failed",
-      message: "An error Occoured!! Please try again.",
-    });
+    return res.status(500).send("Something went wrong! Please try again.");
   }
 };
 
